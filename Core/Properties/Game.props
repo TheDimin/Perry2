@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <GameName>$(ProjectName)</GameName>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Platform)\$(Configuration)_Core;$(SolutionDir)Build\$(Platform)\$(Configuration)_Engine;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
+    </Link>
+    <PreBuildEvent />
+    <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PreLinkEvent>
+      <Command>xcopy "$(SolutionDir)Platforms\$(PlatformDisplayName)\External\FMOD\$(FMODS_LIB)" "$(OutDir)" /Y /d
+xcopy "$(SolutionDir)Platforms\$(PlatformDisplayName)\External\FMOD\$(FMOD_LIB)" "$(OutDir)" /Y /d
+(IF NOT EXIST "$(OutDir)Resources" mklink /J  /D "$(OutDir)Resources" "$(ProjectDir)Resources")
+(IF NOT EXIST "$(OutDir)Resources\Shaders" mklink /J  /D "$(OutDir)Resources\Shaders" "$(SolutionDir)Engine\Shaders")</Command>
+    </PreLinkEvent>
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="GameName">
+      <Value>$(GameName)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

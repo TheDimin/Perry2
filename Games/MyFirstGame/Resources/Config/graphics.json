@@ -1,0 +1,61 @@
+{
+    "Bloom": {
+        "Enabled": true,
+        "Intensity": 1.5,
+        "Radius": 6.699999809265137
+    },
+    "Clear Color": [
+        0.20098036527633667,
+        0.18127641081809998,
+        0.18127641081809998,
+        0.0
+    ],
+    "Fog": {
+        "Color": [
+            0.7200000286102295,
+            0.4300000071525574,
+            0.4300000071525574,
+            0.6100000143051147
+        ],
+        "Density": 0.004000000189989805,
+        "Enabled": true,
+        "End": 410.0,
+        "Mode": 0,
+        "Start": 80.0
+    },
+    "Monochromatic Effect": {
+        "Enabled": false,
+        "Lit Color": [
+            0.9942693114280701,
+            0.8917086124420166,
+            0.8917086124420166
+        ],
+        "Radius": 1300.0,
+        "Threshhold": 0.019999999552965164
+    },
+    "Outlines": {
+        "Enabled": false,
+        "Line Width": 1.0
+    },
+    "SSAO": {
+        "Bias": 0.07999999821186066,
+        "Enabled": false,
+        "Intensity": 1.6799999475479126,
+        "Mode": 1,
+        "Radius": 0.6000000238418579
+    },
+    "Tonemapping": {
+        "Exposure": 0.20000000298023224,
+        "Gamma": 1.899999976158142,
+        "Linear Angle": 0.10000000149011612,
+        "Linear Strength": 0.30000001192092896,
+        "Linear White": 11.199999809265137,
+        "Max Luminence": 1.0,
+        "Mode": 3,
+        "Reinhard Constant": 1.0,
+        "Shoulder Strength": 0.2199999988079071,
+        "Toe Denominator": 0.30000001192092896,
+        "Toe Numerator": 0.009999999776482582,
+        "Toe Strength": 0.20000000298023224
+    }
+}

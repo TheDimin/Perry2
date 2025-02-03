@@ -1,0 +1,82 @@
+#version 430 core
+
+layout (location = 1) out vec3 gPosition;
+layout (location = 2) out vec4 gNormalRoughMet;
+layout (location = 3) out vec4 gAlbedo;
+layout (location = 4) out vec4 gEmissiveAO;
+in VS_OUT
+{
+	vec2 TexCoord;
+	vec3 Normal;
+    mat3 TBN;
+	vec4 PositionWS;   // Model space
+    vec3 tang;
+} FSIn;
+
+struct Material {
+    vec4 albedo;
+    vec3 emissive;
+    float metallic;
+    float roughness;
+    float occlusion;
+    float normal;
+    sampler2D ambientTexture;
+    sampler2D normalTexture;
+    sampler2D MetallicRoughnessTexture;
+    sampler2D OcclusionTexture;
+    sampler2D EmissiveTexture;
+};
+
+
+uniform Material material;
+uniform vec3 camPos;
+
+float saturate(float value)
+{
+    return clamp(value,0.0,1.0);
+}
+
+float GetMaterialMetallic()
+{
+    return saturate(material.metallic * texture(material.MetallicRoughnessTexture, FSIn.TexCoord).b);
+}
+
+float GetMaterialRoughness()
+{
+    return saturate(material.roughness * texture(material.MetallicRoughnessTexture, FSIn.TexCoord).g);
+}
+
+float GetMaterialAO()
+{
+    return mix(material.occlusion, 1.0f, texture(material.OcclusionTexture, FSIn.TexCoord).r);
+}
+
+vec4 GetMaterialAlbedo()
+{
+    return pow(texture(material.ambientTexture, FSIn.TexCoord) * material.albedo,vec4(2.2));
+}
+
+
+vec3 GetMaterialNormal()
+{
+    vec3 normalSample = texture(material.normalTexture, FSIn.TexCoord).rgb * material.normal;
+    normalSample = normalize(normalSample * 2.0f - 1.0f);
+    return normalize(FSIn.TBN * normalSample).xyz;
+}
+
+
+void main()
+{   
+    // store the fragment position vector in the first gbuffer texture
+    gPosition.rgb = FSIn.PositionWS.rgb;
+
+    // also store the per-fragment normals into the gbuffer
+    gNormalRoughMet.rg = GetMaterialNormal().rg;
+    gNormalRoughMet.b = GetMaterialRoughness();
+    gNormalRoughMet.a = GetMaterialMetallic();
+
+    // and the diffuse per-fragment color
+    gAlbedo = GetMaterialAlbedo();
+
+    gEmissiveAO.a = GetMaterialAO();
+}  

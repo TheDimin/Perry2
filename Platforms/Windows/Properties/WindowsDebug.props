@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <FMOD_LIB>fmodL.dll</FMOD_LIB>
+    <FMODS_LIB>fmodstudioL.dll</FMODS_LIB>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PreprocessorDefinitions>META_IMGUI;META_GLM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>fmodL_vc.lib;fmodstudioL_vc.lib;Editor.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Platform)\$(Configuration)_Editor;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PreLinkEvent />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="FMOD_LIB">
+      <Value>$(FMOD_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FMODS_LIB">
+      <Value>$(FMODS_LIB)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

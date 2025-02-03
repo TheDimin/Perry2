@@ -1,0 +1,4 @@
+#define NOMINMAX
+#define GLM_ENABLE_EXPERIMENTAL
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#include "Core.h"

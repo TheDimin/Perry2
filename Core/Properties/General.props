@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IntDir>$(SolutionDir)Build\$(Platform)\$(Configuration)_$(ProjectName)\Intermediate\</IntDir>
+    <OutDir>$(SolutionDir)Build\$(Platform)\$(Configuration)_$(ProjectName)\</OutDir>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
+    <EnableMicrosoftCodeAnalysis>false</EnableMicrosoftCodeAnalysis>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ApplicationProgramFormat>Directory</ApplicationProgramFormat>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(ProjectDir)Headers;$(ProjectDir)External;$(ProjectDir)External\Headers;$(SolutionDir)Engine\Headers;$(SolutionDir)Core\Headers;$(SolutionDir)Core\External\stb;$(SolutionDir)Core\External\TinyglTF;$(SolutionDir)Core\External\glm;$(SolutionDir)Core\External\entt\src;$(SolutionDir)Core\External\enttEditor\Inc;$(SolutionDir)Core\External\imgui;$(SolutionDir)Core\External\imgui\misc\cpp;$(SolutionDir)Core\External\imguizmo;$(SolutionDir)Core\External\EnttEditor;$(SolutionDir)Core\External\Jolt;$(SolutionDir)Core\External\Superluminal;$(SolutionDir)Core\External\json\include;$(SolutionDir)Core\External\FMOD;$(SolutionDir)Platforms\$(PlatformDisplayName)\External\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);STBI_MSC_SECURE_CRT;RENDERER_DEPRECATED;ENGINE_DEPRECATED;ENTT_USE_ATOMIC;_CRT_SECURE_NO_WARNINGS;DEV</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>MaxSpeed</Optimization>
+      <ConformanceMode>true</ConformanceMode>
+      <WarningsAsErrors>true</WarningsAsErrors>
+      <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+    <ProjectReference />
+    <Link />
+    <ProjectReference />
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <AdditionalDependencies>Core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <FxCompile>
+      <ObjectFileOutput>$(SolutionDir)Build\$(Platform)\$(Configuration)_$(ProjectName)\Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

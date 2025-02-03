@@ -1,0 +1,55 @@
+#version 430 core
+
+in vec2 TextureCoord;
+out vec4 FragColor;
+
+layout(std140,binding = 0) buffer dataIN
+{
+    vec3 CameraPosition;
+	float Gamma;
+	float Exposure;
+};
+
+layout(std140,binding = 1) buffer animationData
+{
+	int frameCount;
+	int currentFrame;
+	int flipX;
+	int flipY;
+	//float _PADDING;
+};
+
+struct Material {
+    vec4 albedo;
+    vec3 emissive; 
+    float metallic;
+    float roughness;
+    float occlusion;
+    sampler2D ambientTexture;
+};
+uniform Material material;
+
+void main()
+{
+	vec2 textureCoord = TextureCoord;
+	if (frameCount != 1)
+	{
+		float frameSize = 1.0 / frameCount;
+		float framePosition = frameSize * currentFrame;
+		textureCoord = vec2(TextureCoord.x / frameCount + framePosition, TextureCoord.y);
+	}
+
+	vec4 albedo = texture(material.ambientTexture, textureCoord);
+
+	if (albedo.a < 0.5)
+	{
+		discard;
+	}
+
+	vec3 result = albedo.rgb * material.albedo.rgb;
+
+	vec3 mapped = vec3(1.0f, 1.0f, 1.0f) - exp(-result * Exposure);
+	float g = 1.0f / Gamma;
+	mapped = pow(abs(mapped), vec3(g, g, g));
+	FragColor = vec4(result, 1.0f);
+}

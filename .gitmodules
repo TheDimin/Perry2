@@ -1,0 +1,25 @@
+[submodule "Core/External/entt"]
+	path = Core/External/entt
+	url = https://github.com/skypjack/entt.git
+	branch = v3.13.0
+[submodule "Core/External/json"]
+	path = Core/External/json
+	url = https://github.com/nlohmann/json
+[submodule "Core/External/stb"]
+	path = Core/External/stb
+	url = https://github.com/nothings/stb.git
+[submodule "Core/External/tinygltf"]
+	path = Core/External/tinygltf
+	url = https://github.com/syoyo/tinygltf.git
+[submodule "Core/External/imguizmo"]
+	path = Core/External/imguizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo.git
+[submodule "Core/External/imgui"]
+	path = Core/External/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "Core/External/imguiGraph"]
+	path = Core/External/imguiGraph
+	url = https://github.com/bevilla/imgui-graphnode.git
+[submodule "Core/External/Jolt"]
+	path = Core/External/Jolt
+	url = https://github.com/jrouwe/JoltPhysics.git

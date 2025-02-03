@@ -1,0 +1,276 @@
+#version 430 core
+
+in VS_OUT
+{
+	vec2 TexCoord;
+	vec3 Normal;
+    mat3 TBN;
+	vec4 PositionWS;   // Model space
+    vec3 tang;
+} FSIn;
+
+out vec4 FragColor;
+
+const float ao =1.0;
+const float PI = 3.14159265359;
+
+struct PointLight {
+    vec3 position;
+    float intensity;
+    vec3 color;
+    float m_Padding;
+};
+
+layout(std140,binding = 0) buffer pointLightBuffer
+{
+    uint pointLightCount;
+    PointLight[] pointLightInstances;
+};
+
+struct DirectionalLight
+{
+	vec3 m_Direction;		
+	float m_Intensity;	
+	vec3 m_Color;	
+    float m_Padding[1];	
+};
+
+layout(std140,binding = 1) buffer directionalLight
+{
+    uint directionalLightCount;
+    DirectionalLight[] directionalLightInstances;
+};
+
+struct SpotLight
+{
+	vec3 m_Position;
+	vec3 m_Color;
+	vec3 m_Direction;
+	//glm::mat4 m_LightSpaceMat;
+	float m_InnerAngle;
+	float m_OuterAngle;
+	float m_Intensity;
+	//int32_t m_ShadowMapIndex = -1;
+};
+
+layout(std140,binding = 2) buffer spotLight
+{
+    uint spotLightCount;
+    SpotLight[] spotLightInstances;
+};
+
+
+struct Material {
+    vec4 albedo;
+    vec3 emissive;
+    float metallic;
+    float roughness;
+    float occlusion;
+    sampler2D ambientTexture;
+    sampler2D normalTexture;
+    sampler2D MetallicRoughnessTexture;
+    sampler2D OcclusionTexture;
+    sampler2D EmissiveTexture;
+};
+
+uniform Material material;
+uniform vec3 camPos;
+
+
+
+
+float saturate(float value)
+{
+    return clamp(value,0.0,1.0);
+}
+
+float GetMaterialMetallic()
+{
+    return saturate(material.metallic * texture(material.MetallicRoughnessTexture, FSIn.TexCoord).b);
+}
+
+float GetMaterialRoughness()
+{
+    return saturate(material.roughness * texture(material.MetallicRoughnessTexture, FSIn.TexCoord).g);
+}
+
+float GetMaterialAO()
+{
+    return mix(material.occlusion, 1.0f, texture(material.OcclusionTexture, FSIn.TexCoord).r);
+}
+
+vec4 GetMaterialAlbedo()
+{
+    return pow(texture(material.ambientTexture, FSIn.TexCoord) * material.albedo,vec4(2.2));
+}
+
+vec3 GetMaterialNormal()
+{
+    vec3 normalSample = texture(material.normalTexture, FSIn.TexCoord).rgb;
+    normalSample = normalize(normalSample * 2.0f - 1.0f);
+    return normalize(FSIn.TBN * normalSample).xyz;
+}
+
+
+float SpotCone(vec3 spotDir, vec3 L, float innerSpotAngle, float outerSpotAngle)
+{
+    float minCos = cos(outerSpotAngle);
+    float maxCos = cos(innerSpotAngle);
+    float cosAngle = dot(spotDir, -L);
+
+    return smoothstep(minCos, maxCos, cosAngle);
+}
+
+float pow5(float x)
+{
+    float x2 = x * x;
+    return x2 * x2 * x;
+}
+
+vec3 vec_Schlick(vec3 f0, float f90, float VdotH)
+{
+    return f0 + (f90 - f0) * pow5(clamp(1.0 - VdotH, 0.0, 1.0));
+}
+
+float F_Schlick(float f0, float f90, float VdotH)
+{
+    return f0 + (f90 - f0) * pow5(clamp(1.0 - VdotH, 0.0, 1.0));
+}
+
+vec3 BRDF_lambertian(vec3 f0, float f90, const float VdotH)
+{
+    return (1.0 - vec_Schlick(f0, f90, VdotH)) * (1.0f / PI);
+}
+
+float Fd_Burley(float roughness, float NoV, float NoL, float LoH)
+{
+    float f90 = 0.5f + 2.0f * roughness * LoH * LoH;
+    float lightScatter = F_Schlick(1.0f, f90, NoL);
+    float viewScatter = F_Schlick(1.0f, f90, NoV);
+    return lightScatter * viewScatter * (1.0f / PI);
+}
+
+float V_GGX(float NdotL, float NdotV, float alphaRoughness)
+{
+    float GGXV = NdotL * sqrt(NdotV * NdotV * (1.0 - alphaRoughness) + alphaRoughness);
+    float GGXL = NdotV * sqrt(NdotL * NdotL * (1.0 - alphaRoughness) + alphaRoughness);
+
+    return clamp(0.5f / (GGXV + GGXL),0.0,1.0);
+}
+
+float D_GGX(float NdotH, float alphaRoughness)
+{
+    float f = (NdotH * NdotH) * (alphaRoughness - 1.0) + 1.0;
+    return alphaRoughness / (PI * f * f);
+}
+
+vec3 BRDF_specularGGX(vec3 f0, float f90, float alphaRoughness, float VdotH, float NdotL, float NdotV, float NdotH)
+{
+    float alphaRoughnessSq = alphaRoughness * alphaRoughness;
+
+    float D = D_GGX(NdotH, alphaRoughnessSq);
+    float V = V_GGX(NdotL, NdotV, alphaRoughnessSq);
+    vec3 F = vec_Schlick(f0, f90, VdotH);
+
+    return F * V * D;
+}
+
+vec3 SurfaceShading(vec3 f0, float NoL, vec3 P, vec3 V, vec3 N, vec3 L, vec3 H, vec3 diffuseColor, float metallic, float roughness, vec3 radiance, float attenuation)
+{
+    float NoV = saturate(dot(N, V));
+    NoL = saturate(NoL);
+    float NoH = saturate(dot(N, H));
+    float LoH = saturate(dot(L, H));
+    float VoH = saturate(dot(V, H));
+
+    float f90 = saturate(dot(f0, vec3(50.0f * 0.33f)));
+
+    vec3 Fr = BRDF_specularGGX(f0, f90, roughness, VoH, NoL, NoV, NoH);
+    //vec3 Fd = diffuseColor * BRDF_lambertian(f0, f90, VoH);
+    vec3 Fd = diffuseColor * Fd_Burley(roughness, NoV, NoL, LoH);
+
+    vec3 color = Fd + Fr;
+
+    return color * radiance * attenuation * NoL;
+}
+
+vec3 EvaluateLights(vec3 f0, vec3 P, vec3 V, vec3 N, vec3 diffuseColor, float metallic, float roughness)
+{
+    vec3 Lo = vec3(0);
+    uint i;
+    for (i = 0; i < directionalLightCount; i++)
+    {
+        vec3 L = -directionalLightInstances[i].m_Direction;
+        float NoL = dot(N, L);
+        if (NoL <= 0.0f) continue;
+
+        vec3 H = normalize(V + L);
+        vec3 radiance = directionalLightInstances[i].m_Color.rgb;
+        float attenuation = directionalLightInstances[i].m_Intensity;
+        float shadowFactor = 1f;
+       // if (directionalLightInstances[i].m_ShadowMapIndex >= 0)FSIn
+       //    shadowFactor = CalcShadowFactor(float4(mul(directionalLightInstances[i].m_LightSpaceMat, float4(P, 1.0))), directionalLightInstances[i].m_ShadowMapIndex);
+        
+        Lo += shadowFactor * SurfaceShading(f0, NoL, P, V, N, L, H, diffuseColor, metallic, roughness, radiance, attenuation);
+    }
+    for (i = 0; i < pointLightCount; i++)
+    {
+
+        if (length(P * P - pointLightInstances[i].position.xyz* pointLightInstances[i].position.xyz * pointLightInstances[i].intensity) < 500.f)
+            continue;
+
+        vec3 L = normalize(pointLightInstances[i].position.xyz - P);
+        float NoL = dot(N, L);
+        if (NoL <= 0.0f) continue;
+
+        vec3 H = normalize(V + L);
+        float D = distance(pointLightInstances[i].position.xyz, P);
+        float attenuation = pointLightInstances[i].intensity / (D * D);
+        vec3 radiance = pointLightInstances[i].color.rgb;
+
+        Lo += SurfaceShading(f0, NoL, P, V, N, L, H, diffuseColor, metallic, roughness, radiance, attenuation);
+    }
+    for (i = 0; i < spotLightCount; i++)
+    {
+        vec3 L = normalize(spotLightInstances[i].m_Position - P);
+        float NoL = dot(N, L);
+        if (NoL <= 0.0f) continue;
+
+        vec3 H = normalize(V + L);
+        float D = length(spotLightInstances[i].m_Position - P);
+        float spotIntensity = SpotCone(spotLightInstances[i].m_Direction, L, spotLightInstances[i].m_InnerAngle, spotLightInstances[i].m_OuterAngle);
+        float attenuation = (spotLightInstances[i].m_Intensity * spotIntensity) / (D * D);
+        vec3 radiance = spotLightInstances[i].m_Color.rgb;
+        float shadowFactor = 1.0f;
+        //if (SpotLightsSB[i].m_ShadowMapIndex >= 0)
+         //  shadowFactor = CalcShadowFactor(float4(mul(SpotLightsSB[i].m_LightSpaceMat, float4(P, 1.0))), SpotLightsSB[i].m_ShadowMapIndex);
+        Lo += shadowFactor * SurfaceShading(f0, NoL, P, V, N, L, H, diffuseColor, metallic, roughness, radiance, attenuation);
+    }
+    return Lo;
+}
+
+void main() 
+{
+    vec4 baseColor = GetMaterialAlbedo();
+    vec3 P = FSIn.PositionWS.rgb;
+    vec3 V =  normalize(camPos - P);
+    vec3 N = GetMaterialNormal();
+    
+    vec3 emission = vec3(0,0,0); //TODO add suport for emission
+    
+       // emission = material.Emissive;
+        //emission *= texture(material.EmissiveTexture, FSIn.TexCoord).rgb;
+    
+    
+    float AO= GetMaterialAO();
+    float metallic = GetMaterialMetallic();
+    float roughness = GetMaterialRoughness();
+    
+
+    // Compute pixel color
+    vec3 f0 = mix(vec3(0.01f), baseColor.rgb, metallic);
+    vec3 diffuseColor = baseColor.rgb * (1.0f - metallic);
+    vec4 color = vec4(EvaluateLights(f0, P, V, N, diffuseColor, metallic, roughness) * AO + emission, baseColor.a);
+
+    FragColor = color;//vec4( N ,1);
+}

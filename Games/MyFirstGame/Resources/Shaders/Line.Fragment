@@ -1,0 +1,9 @@
+#version 430 core
+
+out vec4 FragColor;  // Output color
+in vec3 iFragColor;
+
+void main()
+{
+    FragColor = vec4(iFragColor,1.0);
+}

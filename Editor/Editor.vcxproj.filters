@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="Headers\Tools\RegionInfo\EntityViewer.h" />
+    <ClInclude Include="Headers\Tools\MetaDefineTool.h" />
+    <ClInclude Include="Headers\Tools\RegionInfoTool.h" />
+    <ClInclude Include="Headers\Tools\ResouceViewer.h" />
+    <ClInclude Include="Headers\Tools\ToolBase.h" />
+    <ClInclude Include="Headers\Tools\ToolManager.h" />
+    <ClInclude Include="Headers\ContextMenu.h" />
+    <ClInclude Include="Headers\Editor.h" />
+    <ClInclude Include="Headers\Inspector.h" />
+    <ClInclude Include="Headers\Tools\ImguiDemoTool.h" />
+    <ClInclude Include="Headers\Actions\CreateObjectAction.h" />
+    <ClInclude Include="Headers\ActionManager.h" />
+    <ClInclude Include="Headers\Actions\SetObjectNameAction.h" />
+    <ClInclude Include="Headers\Tools\SaveFileViewer.h" />
+    <ClInclude Include="Headers\EditorPCH.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Tools\RegionInfo\EntityViewer.cpp" />
+    <ClCompile Include="Source\Tools\RegionInfoTool.cpp" />
+    <ClCompile Include="Source\ContextMenu.cpp" />
+    <ClCompile Include="Source\Editor.cpp" />
+    <ClCompile Include="Source\Inspector.cpp" />
+    <ClCompile Include="Source\ResourceViewer.cpp" />
+    <ClCompile Include="Source\ToolBase.cpp" />
+    <ClCompile Include="Source\ToolManager.cpp" />
+    <ClCompile Include="Source\Tools\ImguiDemoTool.cpp" />
+    <ClCompile Include="Source\Actions\CreateObjetAction.cpp" />
+    <ClCompile Include="Source\ActionManager.cpp" />
+    <ClCompile Include="Source\Actions\SetObjectNameAction.cpp" />
+    <ClCompile Include="Source\Tools\SaveFileViewer.cpp" />
+    <ClCompile Include="Source\EditorPCH.cpp" />
+  </ItemGroup>
+</Project>

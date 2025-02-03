@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Shipping|x64">
+      <Configuration>Shipping</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{65186bab-14af-44c6-820e-4b92824387e9}</ProjectGuid>
+    <RootNamespace>Win64</RootNamespace>
+    <ProjectName>Windows</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Core\Properties\General.props" />
+    <Import Project="Properties\Windows.props" />
+    <Import Project="Properties\WindowsDebug.props" />
+    <Import Project="..\..\Core\Properties\Debug.props" />
+    <Import Project="Properties\LivePP.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Properties\Windows.props" />
+    <Import Project="..\..\Core\Properties\General.props" />
+    <Import Project="Properties\WindowsRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\Core\Properties\General.props" />
+    <Import Project="Properties\Windows.props" />
+    <Import Project="Properties\WindowsRelease.props" />
+    <Import Project="..\..\Core\Properties\Shipping.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib />
+    <ProjectReference />
+    <Lib />
+    <FxCompile />
+    <FxCompile />
+    <Lib />
+    <Lib>
+      <ErrorReporting>SendErrorReport</ErrorReporting>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <FxCompile />
+    <FxCompile />
+    <FxCompile />
+    <FxCompile />
+    <Lib />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Shipping|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <FxCompile />
+    <FxCompile />
+    <FxCompile />
+    <FxCompile />
+    <Lib>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;dxguid.lib;D3Dcompiler.lib;DirectXTex_MD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)External/DirectXTex/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="External\FMOD\inc\fmod.h" />
+    <ClInclude Include="External\FMOD\inc\fmod.hpp" />
+    <ClInclude Include="External\FMOD\inc\fmod_codec.h" />
+    <ClInclude Include="External\FMOD\inc\fmod_common.h" />
+    <ClInclude Include="External\FMOD\inc\fmod_dsp.h" />
+    <ClInclude Include="External\FMOD\inc\fmod_dsp_effects.h" />
+    <ClInclude Include="External\FMOD\inc\fmod_errors.h" />
+    <ClInclude Include="External\FMOD\inc\fmod_output.h" />
+    <ClInclude Include="External\FMOD\inc\fmod_studio.h" />
+    <ClInclude Include="External\FMOD\inc\fmod_studio.hpp" />
+    <ClInclude Include="External\FMOD\inc\fmod_studio_common.h" />
+    <ClInclude Include="External\glad\glad.h" />
+    <ClInclude Include="External\glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="External\GLFW\glfw3.h" />
+    <ClInclude Include="External\GLFW\glfw3native.h" />
+    <ClInclude Include="External\ImGui\imgui_impl_glfw.h" />
+    <ClInclude Include="External\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="External\steam\isteamapps.h" />
+    <ClInclude Include="External\steam\isteamappticket.h" />
+    <ClInclude Include="External\steam\isteamclient.h" />
+    <ClInclude Include="External\steam\isteamcontroller.h" />
+    <ClInclude Include="External\steam\isteamdualsense.h" />
+    <ClInclude Include="External\steam\isteamfriends.h" />
+    <ClInclude Include="External\steam\isteamgamecoordinator.h" />
+    <ClInclude Include="External\steam\isteamgameserver.h" />
+    <ClInclude Include="External\steam\isteamgameserverstats.h" />
+    <ClInclude Include="External\steam\isteamhtmlsurface.h" />
+    <ClInclude Include="External\steam\isteamhttp.h" />
+    <ClInclude Include="External\steam\isteaminput.h" />
+    <ClInclude Include="External\steam\isteaminventory.h" />
+    <ClInclude Include="External\steam\isteammatchmaking.h" />
+    <ClInclude Include="External\steam\isteammusic.h" />
+    <ClInclude Include="External\steam\isteammusicremote.h" />
+    <ClInclude Include="External\steam\isteamnetworking.h" />
+    <ClInclude Include="External\steam\isteamnetworkingmessages.h" />
+    <ClInclude Include="External\steam\isteamnetworkingsockets.h" />
+    <ClInclude Include="External\steam\isteamnetworkingutils.h" />
+    <ClInclude Include="External\steam\isteamparentalsettings.h" />
+    <ClInclude Include="External\steam\isteamps3overlayrenderer.h" />
+    <ClInclude Include="External\steam\isteamremoteplay.h" />
+    <ClInclude Include="External\steam\isteamremotestorage.h" />
+    <ClInclude Include="External\steam\isteamscreenshots.h" />
+    <ClInclude Include="External\steam\isteamtimeline.h" />
+    <ClInclude Include="External\steam\isteamugc.h" />
+    <ClInclude Include="External\steam\isteamuser.h" />
+    <ClInclude Include="External\steam\isteamuserstats.h" />
+    <ClInclude Include="External\steam\isteamutils.h" />
+    <ClInclude Include="External\steam\isteamvideo.h" />
+    <ClInclude Include="External\steam\steamclientpublic.h" />
+    <ClInclude Include="External\steam\steamencryptedappticket.h" />
+    <ClInclude Include="External\steam\steamhttpenums.h" />
+    <ClInclude Include="External\steam\steamnetworkingfakeip.h" />
+    <ClInclude Include="External\steam\steamnetworkingtypes.h" />
+    <ClInclude Include="External\steam\steamps3params.h" />
+    <ClInclude Include="External\steam\steamtypes.h" />
+    <ClInclude Include="External\steam\steamuniverse.h" />
+    <ClInclude Include="External\steam\steam_api.h" />
+    <ClInclude Include="External\steam\steam_api_common.h" />
+    <ClInclude Include="External\steam\steam_api_flat.h" />
+    <ClInclude Include="External\steam\steam_api_internal.h" />
+    <ClInclude Include="External\steam\steam_gameserver.h" />
+    <ClInclude Include="Headers\Graphics\Shader.h" />
+    <ClInclude Include="Headers\HotReloadSystem.h" />
+    <ClInclude Include="Headers\TypeDefs.h" />
+    <ClInclude Include="Headers\pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="External\FMOD\inc\fmod.cs" />
+    <None Include="External\FMOD\inc\fmod_dsp.cs" />
+    <None Include="External\FMOD\inc\fmod_errors.cs" />
+    <None Include="External\FMOD\inc\fmod_studio.cs" />
+    <None Include="External\steam\steam_api.dll" />
+    <None Include="External\steam\steam_api.json" />
+    <None Include="External\steam\steam_api64.dll" />
+    <None Include="Properties\LivePP.props" />
+    <None Include="Resources\Shaders\Mesh.Fragment" />
+    <None Include="Resources\Shaders\Mesh.vertex" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Graphics\ComputeShader.cpp" />
+    <ClCompile Include="Source\Graphics\DebugRenderer.cpp" />
+    <ClCompile Include="External\glad\glad.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\ImGui\imgui_impl_glfw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="External\ImGui\imgui_impl_opengl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\FileIO.cpp" />
+    <ClCompile Include="Source\Graphics\InRenderer.cpp" />
+    <ClCompile Include="Source\Graphics\Material.cpp" />
+    <ClCompile Include="Source\Graphics\Model.cpp" />
+    <ClCompile Include="Source\Graphics\Primitive.cpp" />
+    <ClCompile Include="Source\HotReloadSystem.cpp" />
+    <ClCompile Include="Source\LoggerSystem.cpp" />
+    <ClCompile Include="Source\Networking.cpp" />
+    <ClCompile Include="Source\Platform.cpp" />
+    <ClCompile Include="Source\Renderer.cpp" />
+    <ClCompile Include="Source\Graphics\Shader.cpp" />
+    <ClCompile Include="Source\Graphics\Texture.cpp" />
+    <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Utilities.cpp" />
+    <ClCompile Include="Source\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="External\steam\steam_api.lib" />
+    <Library Include="External\steam\steam_api64.lib" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

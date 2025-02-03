@@ -1,0 +1,8 @@
+
+
+ExtraArgs: 
+  - -std=c++17
+  - -Wall
+  - -PLATFORM_WINDOWS
+  - -Wno-c++98-compat
+  - -Wno-c++98-compat-pedantic

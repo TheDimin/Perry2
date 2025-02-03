@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <PlatformDisplayName>Windows</PlatformDisplayName>
+    <FMOD_LIB>fmod.dll</FMOD_LIB>
+    <FMODS_LIB>fmodstudio.dll</FMODS_LIB>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AllProjectIncludesArePublic>true</AllProjectIncludesArePublic>
+    <MultiProcFXC>true</MultiProcFXC>
+    <TargetExt>.lib</TargetExt>
+    <LibraryPath>$(SolutionDir)Platforms\Windows\External\GLFW\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);PLATFORM_WINDOWS;</PreprocessorDefinitions>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)Platforms\Windows\Headers;$(SolutionDir)Platforms\Windows\External;$(SolutionDir)Platforms\Windows\External\Headers;$(SolutionDir)Platforms\Windows\External\GLFW;$(SolutionDir)Platforms\Windows\External\steam;$(SolutionDir)Platforms\Windows\External\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>glfw3.lib;XInput.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Platforms\Windows\External\GLFW\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>glfw3.lib;ktx.lib;XInput.lib;Windows.lib;PerformanceAPI_MDd.lib;steam_api64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Platforms\Windows\External\Superluminal;$(SolutionDir)Platforms\Windows\External\FMOD;$(SolutionDir)Platforms\Windows\External\LDtkLoader;$(ProjectDir)\Platforms\Windows\External\GLFW\lib;$(SolutionDir)Build\$(Platform)\$(Configuration)_Windows;$(SolutionDir)Platforms\Windows\External\steam;$(SolutionDir)Platforms\Windows\External\KTX;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <FxCompile>
+      <ShaderModel>5.1</ShaderModel>
+    </FxCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="PlatformDisplayName">
+      <Value>$(PlatformDisplayName)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FMOD_LIB">
+      <Value>$(FMOD_LIB)</Value>
+    </BuildMacro>
+    <BuildMacro Include="FMODS_LIB">
+      <Value>$(FMODS_LIB)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
