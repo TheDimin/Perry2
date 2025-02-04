@@ -2,7 +2,7 @@
 
 Perry 2 is a custom game engine designed for high-performance real-time simulation.
 
-Perry2 is the successor to Perry1, the engine that powered [Hellbound](https://buas.itch.io/hellbound).
+Perry2 is the successor to the engine that powered [Hellbound](https://buas.itch.io/hellbound).
 
 ## Features
 
