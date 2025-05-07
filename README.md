@@ -1,8 +1,6 @@
 # Perry 2 Engine
 
-Perry 2 aims to be a engine that simulates massive worlds, I try to achieve this by the creation of world regions and running simulation per region. 
-
-Perry2 is the successor to the engine that powered [Hellbound](https://buas.itch.io/hellbound).
+Perry2 is the successor to perry1(closed source) which was used to create [Hellbound](https://buas.itch.io/hellbound).
 
 ## Features
 
@@ -18,4 +16,6 @@ WIP Multithreading.
 
 ## Contributing
 
-Contributions are welcome! Please submit issues and pull requests via GitHub.
+Contributions are welcome! Please submit issues and pull requests.
+
+
